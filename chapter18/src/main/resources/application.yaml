@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: chapter18
+
+
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+  sql:
+    init:
+      schema-locations: classpath*:db/h2/schema.sql
+      data-locations: classpath*:db/h2/data.sql
+logging:
+  level:
+    org:
+      springframework:
+        r2dbc: DEBUG

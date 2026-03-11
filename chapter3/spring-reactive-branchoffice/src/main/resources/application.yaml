@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: spring-reactive-branchoffice
+
+server:
+  port: 7070
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level- %msg%n"

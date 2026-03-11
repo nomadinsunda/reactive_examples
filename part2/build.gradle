@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.11'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.itvillage'
+version = '0.0.1-SNAPSHOT'
+description = 'part2'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // 최신 안정 버전 (2026년 3월 기준)
+    implementation 'com.jayway.jsonpath:json-path:2.9.0'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // 최신 안정 버전 (2026년 3월 기준)
+    implementation 'io.projectreactor.addons:reactor-extra:3.6.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
