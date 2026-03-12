@@ -2,7 +2,7 @@ package com.itvillage.exception;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itvillage.v10.ErrorResponse;
+import com.itvillage.v11.ErrorResponse;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -36,26 +36,27 @@ public class GlobalWebExceptionHandler implements ErrorWebExceptionHandler {
         DataBuffer dataBuffer = null;
 
         DataBufferFactory bufferFactory =
-                                serverWebExchange.getResponse().bufferFactory();
+                serverWebExchange.getResponse().bufferFactory();
         serverWebExchange.getResponse().getHeaders()
-                                        .setContentType(MediaType.APPLICATION_JSON);
+                .setContentType(MediaType.APPLICATION_JSON);
 
         if (throwable instanceof BusinessLogicException) {
             BusinessLogicException ex = (BusinessLogicException) throwable;
             ExceptionCode exceptionCode = ex.getExceptionCode();
             errorResponse = ErrorResponse.of(exceptionCode.getStatus(),
-                                                exceptionCode.getMessage());
+                    exceptionCode.getMessage());
             serverWebExchange.getResponse()
-                        .setStatusCode(HttpStatus.valueOf(exceptionCode.getStatus()));
-        } else if (throwable instanceof ResponseStatusException) {
-            ResponseStatusException ex = (ResponseStatusException) throwable;
-            errorResponse = ErrorResponse.of(ex.getStatusCode().value(), ex.getMessage());
+                    .setStatusCode(HttpStatus.valueOf(exceptionCode.getStatus()));
+        }
+        // ResponseStatusException 처리 부분 수정
+       else if (throwable instanceof ResponseStatusException ex) {
+             errorResponse = ErrorResponse.of(ex.getStatusCode().value(), ex.getReason());
             serverWebExchange.getResponse().setStatusCode(ex.getStatusCode());
         } else {
             errorResponse = ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                                                            throwable.getMessage());
+                    throwable.getMessage());
             serverWebExchange.getResponse()
-                                    .setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
+                    .setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         try {

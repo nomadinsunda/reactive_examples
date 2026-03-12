@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: chapter21 # 현재 프로젝트에 맞춰 변경 추천
+
+  r2dbc:
+    url: r2dbc:h2:mem:///testdb
+    username: sa
+    password:
+    generate-unique-name: false
+
+#  sql:
+#    init:
+#      mode: always # 항상 실행되도록 보장
+#      schema-locations: classpath:db/h2/schema.sql
+#      data-locations: classpath:db/h2/data.sql
+
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.springframework.r2dbc: DEBUG
+    io.r2dbc.h2: DEBUG
